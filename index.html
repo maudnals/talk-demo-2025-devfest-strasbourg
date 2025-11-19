@@ -157,6 +157,16 @@
         left: 100%; /* Sweep across to the right */
       }
 
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #555; /* Darker background for disabled state */
+      }
+
+      button:disabled::after {
+        display: none; /* Disable hover effect for disabled buttons */
+      }
+
       .right-pane {
         flex: 2;
         min-width: 300px;
@@ -255,6 +265,13 @@
     </header>
 
     <main class="spotify-container">
+      <progress hidden id="progress" value="0"></progress>
+      <label
+        style="color: var(--gray-900)"
+        class="paragraph-regular text-pretty text-gray-900"
+        for="progress"
+        >Model download progress</label
+      >
       <div class="left-pane">
         <div class="album-art-placeholder">
           <div class="vinyl-icon-lg"></div>
@@ -476,9 +493,16 @@
       });
     document
       .querySelector(".summarize-button")
-      .addEventListener("click", async () => {
+      .addEventListener("click", async (e) => {
+        const summarizeButton = e.currentTarget;
+        const originalButtonText = summarizeButton.textContent;
+
         const reviewSummary = document.querySelector("#reviewSummary");
         reviewSummary.hidden = true;
+
+        summarizeButton.disabled = true;
+        summarizeButton.textContent = "Summarizing...";
+
         try {
           const summarizer = await Summarizer.create({
             expectedInputLanguages: ["en"],
@@ -501,6 +525,9 @@
           reviewSummary.innerHTML = marked.parse(result);
         } catch (err) {
           reviewSummary.textContent = err.message;
+        } finally {
+          summarizeButton.disabled = false;
+          summarizeButton.textContent = originalButtonText;
         }
       });
   </script>
