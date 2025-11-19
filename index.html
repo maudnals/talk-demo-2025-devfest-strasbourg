@@ -3,18 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Disco AI</title>
+    <title>DevFest Strasbourg Disco</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪩</text></svg>"
+    />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Carter+One&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Nabla&display=swap");
 
       :root {
-        --font-main: "Helvetica Neue", sans-serif;
-        --font-display: "Carter One", cursive;
+        --font-main: system-ui;
+        --font-display: "Nabla", system-ui;
         --color-bg: #2c003e;
-        --color-text: #f0f0f0;
+        --color-text: #f4e1ff;
         --color-highlight: #ff9900;
         --color-accent: #8a2be2;
         --color-gold: gold;
+        --color-gold-transparent: rgba(255, 217, 0, 0.435);
         --color-bg-light: rgba(255, 255, 255, 0.05);
         --color-bg-hover: rgba(255, 255, 255, 0.1);
       }
@@ -22,16 +27,24 @@
       body {
         background-color: var(--color-bg);
         background-image: radial-gradient(
-            var(--color-gold) 0.5px,
+            var(--color-gold-transparent) 0.5px,
             transparent 0.5px
           ),
-          radial-gradient(var(--color-gold) 0.5px, transparent 0.5px);
+          radial-gradient(
+            var(--color-gold-transparent) 0.5px,
+            transparent 0.5px
+          );
         background-size: 15px 15px;
         background-position: 0 0, 7.5px 7.5px;
         color: var(--color-text);
         font-family: var(--font-main);
         margin: 0;
         padding: 0;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        min-width: 200px;
       }
 
       .spotify-header {
@@ -44,27 +57,17 @@
         font-family: var(--font-display);
         font-size: 1.2rem;
         text-align: center;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
       }
 
       .disco-ball {
-        width: 35px;
-        height: 35px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%; /* Keep border-radius for shape */
         background-image: url("disco-ball.gif");
         background-size: cover; /* Cover the entire area */
         background-position: center; /* Center the GIF */
         box-shadow: 0 0 12px 2px #fff, 0 0 20px 6px var(--color-gold); /* Keep shadow for glow */
-        animation: spin 5s linear infinite;
-      }
-
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
       }
 
       .spotify-container {
@@ -78,15 +81,19 @@
 
       .left-pane {
         flex: 1;
-        min-width: 250px;
+        min-width: 200px;
         text-align: center;
       }
 
       .album-art-placeholder {
+        background-image: url("album-cover.jpg");
         width: 100%;
         aspect-ratio: 1 / 1;
-        background-color: var(--color-accent);
-        border: 4px solid var(--color-gold);
+        background-image: url(album-cover.jpg);
+        background-size: contain;
+        /* filter: hue-rotate(45deg); */
+        /* background-color: var(--color-accent); */
+        border: 3px solid var(--color-gold);
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -95,14 +102,14 @@
       }
 
       .vinyl-icon-lg {
-        width: 70%;
+        /* width: 70%;
         height: 70%;
         background-color: #111;
         border-radius: 50%;
         border: 10px double var(--color-gold);
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: center; */
       }
       .vinyl-icon-lg::after {
         content: "";
@@ -120,32 +127,76 @@
         margin: 0.5rem 0;
       }
       .left-pane h2 {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
       .left-pane h3 {
         font-size: 1.2rem;
         color: #ccc;
       }
 
-      .play-button {
+      button {
         background-color: var(--color-highlight);
-        color: #111;
-        border: none;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.4px;
+        font-weight: bold;
+        color: var(--color-bg);
+        border: solid 2px var(--color-gold);
         border-radius: 50px;
-        padding: 1rem 3rem;
-        font-family: var(--font-display);
-        font-size: 1.2rem;
+        padding: 0.8rem 2rem;
         cursor: pointer;
-        margin: 1rem 0;
+        margin: 0 0.4rem 0 0;
         width: 100%;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .button-group {
+        display: flex;
+      }
+
+      button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%; /* Start off-screen to the left */
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.8),
+          transparent
+        );
+        transition: all 0.4s ease-in-out; /* Sparkle sweep animation */
+        transform: skewX(-30deg); /* Angle the sparkle */
+        z-index: -1; /* Place below button content */
+      }
+
+      button:hover::after {
+        left: 100%; /* Sweep across to the right */
       }
 
       .right-pane {
         flex: 2;
         min-width: 300px;
-        background-color: rgba(10, 0, 20, 0.85);
-        padding: 1.5rem;
+        background-color: rgba(10, 0, 20, 0.65);
+        padding: 0 1.5rem;
         border-radius: 8px;
+        border-left: 3px solid var(--color-highlight);
+      }
+
+      .right-pane-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+      }
+
+      .track-list-wrapper {
+        text-align: left;
       }
 
       .track-list {
@@ -156,10 +207,9 @@
 
       .track-list li {
         display: grid;
-        grid-template-columns: 20px 30px 1fr auto;
-        gap: 1rem;
+        grid-template-columns: 13px 22px 1fr auto;
         align-items: center;
-        padding: 0.75rem;
+        padding: 0.5rem;
         border-radius: 4px;
         transition: background-color 0.2s;
       }
@@ -170,6 +220,7 @@
 
       .track-number {
         color: #aaa;
+        font-family: var(--font-display);
       }
       .track-info {
         font-weight: bold;
@@ -183,29 +234,59 @@
       .vinyl-icon-sm {
         width: 18px;
         height: 18px;
-        background-color: #111;
-        border-radius: 50%;
-        border: 1px solid var(--color-gold);
-        background-image: url("/chrome-dino-vinyl.jpg");
-        background-position: center;
+        /* background-image: url("chrome-dino-vinyl.jpg"); */
         background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       #review {
-        margin-top: 2rem;
         background-color: var(--color-bg-light);
         padding: 1rem;
-        border-radius: 8px;
         font-size: 0.9rem;
         line-height: 1.6;
-        border-left: 3px solid var(--color-highlight);
+        margin-bottom: 0.4rem;
+      }
+
+      #reviewSummary {
+        background-color: var(--color-gold-transparent);
+        padding: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      #reviewSummary ul {
+        list-style: none; /* Remove default bullet */
+        padding-left: 1.2em; /* Adjust for custom bullet */
+      }
+
+      #reviewSummary ul li::before {
+        content: "✦"; /* Custom bullet symbol */
+        color: var(--color-highlight); /* Color of the bullet */
+        display: inline-block;
+        width: 1em; /* Space for the bullet */
+        margin-left: -1.2em; /* Pull the bullet to the left */
+      }
+
+      #reviewSummary ul {
+        list-style: none; /* Remove default bullet */
+        padding-left: 1.2em; /* Adjust for custom bullet */
+      }
+
+      #reviewSummary ul li::before {
+        content: "✦"; /* Custom bullet symbol */
+        color: var(--color-highlight); /* Color of the bullet */
+        display: inline-block;
+        width: 1em; /* Space for the bullet */
+        margin-left: -1.2em; /* Pull the bullet to the left */
       }
     </style>
   </head>
   <body>
     <header class="spotify-header">
       <div class="disco-ball"></div>
-      <div class="header-title">Saturday Night Fever</div>
+      <div class="header-title">DevFest Strasbourg Disco</div>
+      <div class="disco-ball"></div>
     </header>
 
     <main class="spotify-container">
@@ -215,78 +296,78 @@
         </div>
         <h2>Saturday Night Fever</h2>
         <h3>Bee Gees</h3>
-        <button class="play-button">Play</button>
-        <div class="button-group">
-          <button class="translate-button">Translate</button>
-          <button class="summarize-button">Summarize</button>
+        <div class="track-list-wrapper">
+          <ol class="track-list">
+            <li>
+              <div class="track-number">1</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">Stayin' Alive</div>
+            </li>
+            <li>
+              <div class="track-number">2</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">How Deep Is Your Love</div>
+            </li>
+            <li>
+              <div class="track-number">3</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">Night Fever</div>
+            </li>
+            <li>
+              <div class="track-number">4</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">More Than a Woman</div>
+            </li>
+            <li>
+              <div class="track-number">5</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">Jive Talkin'</div>
+            </li>
+            <li>
+              <div class="track-number">6</div>
+              <div class="vinyl-icon-sm"></div>
+              <div class="track-info">You Should Be Dancing</div>
+            </li>
+          </ol>
         </div>
-        <div id="reviewSummary"></div>
       </div>
 
       <div class="right-pane">
-        <ol class="track-list">
-          <li>
-            <div class="track-number">1</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">Stayin' Alive</div>
-            <div class="track-menu">...</div>
-          </li>
-          <li>
-            <div class="track-number">2</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">How Deep Is Your Love</div>
-            <div class="track-menu">...</div>
-          </li>
-          <li>
-            <div class="track-number">3</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">Night Fever</div>
-            <div class="track-menu">...</div>
-          </li>
-          <li>
-            <div class="track-number">4</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">More Than a Woman</div>
-            <div class="track-menu">...</div>
-          </li>
-          <li>
-            <div class="track-number">5</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">Jive Talkin'</div>
-            <div class="track-menu">...</div>
-          </li>
-          <li>
-            <div class="track-number">6</div>
-            <div class="vinyl-icon-sm"></div>
-            <div class="track-info">You Should Be Dancing</div>
-            <div class="track-menu">...</div>
-          </li>
-        </ol>
-        <div id="review">
-          "Saturday Night Fever" was more than just a movie soundtrack. It was a
-          huge hit in 1977, when disco was very popular. The Bee Gees made a
-          record so catchy and popular that for many, it truly defined disco.
-          This was a well-made studio album. The Gibb brothers made a comeback
-          by changing their music style and got really good at their
-          high-pitched singing, leading to many hits. The three big hits that
-          start the album are great pop songs. "Stayin' Alive" is a song about
-          getting through tough times, with a strong beat and powerful singing.
-          It was different from other disco songs that sometimes had shallow
-          lyrics. It's about the struggle to survive, but you could still dance
-          to it. Then comes "Night Fever," a smooth and exciting song that makes
-          you feel like you're at a glamorous club. And when you expect more
-          dance music, they switch to "How Deep Is Your Love," a very sweet love
-          song that really worked. It was the perfect slow song for a dance
-          break. The album's cleverness comes from having two parts. It had the
-          Bee Gees' best work and a great collection of other top disco songs.
-          By including their songs with other energetic dance tracks like The
-          Trammps' "Disco Inferno" and KC and the Sunshine Band's fun "Boogie
-          Shoes," the album shows us what that time was like. It captures the
-          peak of disco's popularity just before people started to hate disco.
-          "Saturday Night Fever" isn't just a great dance record; it's a smart
-          and exciting look at a culture at its best, right before things
-          drastically changed.
+        <div class="right-pane-header">
+          <h1>Album review</h1>
+          <div class="button-group">
+            <button class="translate-button">Translate</button>
+            <button class="summarize-button">Summarize</button>
+          </div>
         </div>
+        <div id="review">
+          <p>
+            "Saturday Night Fever" was more than just a movie soundtrack. It was
+            a huge hit in 1977, when disco was very popular. The Bee Gees made a
+            record so catchy and popular that for many, it truly defined disco.
+            This was a well-made studio album. The Gibb brothers made a comeback
+            by changing their music style and got really good at their
+            high-pitched singing, leading to many hits. The three big hits that
+            start the album are great pop songs. "Stayin' Alive" is a song about
+            getting through tough times, with a strong beat and powerful
+            singing. It was different from other disco songs that sometimes had
+            shallow lyrics. It's about the struggle to survive, but you could
+            still dance to it. Then comes "Night Fever," a smooth and exciting
+            song that makes you feel like you're at a glamorous club. And when
+            you expect more dance music, they switch to "How Deep Is Your Love,"
+            a very sweet love song that really worked. It was the perfect slow
+            song for a dance break. The album's cleverness comes from having two
+            parts. It had the Bee Gees' best work and a great collection of
+            other top disco songs. By including their songs with other energetic
+            dance tracks like The Trammps' "Disco Inferno" and KC and the
+            Sunshine Band's fun "Boogie Shoes," the album shows us what that
+            time was like. It captures the peak of disco's popularity just
+            before people started to hate disco. "Saturday Night Fever" isn't
+            just a great dance record; it's a smart and exciting look at a
+            culture at its best, right before things drastically changed.
+          </p>
+        </div>
+        <div id="reviewSummary"></div>
       </div>
     </main>
   </body>
