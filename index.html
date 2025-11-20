@@ -125,7 +125,7 @@
       padding: 0.8rem 2rem;
       cursor: pointer;
       margin: 0 0.4rem 0 0;
-      width: 100%;
+      width: 160px;
       position: relative;
       overflow: hidden;
       z-index: 1;
@@ -488,8 +488,14 @@
 
   document
     .querySelector(".translate-button")
-    .addEventListener("click", async () => {
+    .addEventListener("click", async (e) => {
+      const translateButton = e.currentTarget;
+      const originalButtonText = translateButton.textContent;
       const review = document.querySelector("#review");
+
+      translateButton.disabled = true;
+      translateButton.textContent = "Translating...";
+
       try {
         const translator = await Translator.create({
           sourceLanguage: "en",
@@ -504,6 +510,9 @@
         }
       } catch (err) {
         review.textContent = err.message;
+      } finally {
+        translateButton.disabled = false;
+        translateButton.textContent = originalButtonText;
       }
     });
   document
