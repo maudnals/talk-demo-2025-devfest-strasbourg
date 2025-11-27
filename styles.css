@@ -1,0 +1,274 @@
+@import url("https://fonts.googleapis.com/css2?family=Nabla&display=swap");
+
+:root {
+  --font-main: system-ui;
+  --font-display: "Nabla", system-ui;
+  --color-bg: #2c003e;
+  --color-text: #f4e1ff;
+  --color-highlight: #ff9900;
+  --color-accent: #8a2be2;
+  --color-gold: gold;
+  --color-gold-transparent: rgba(255, 217, 0, 0.435);
+  --color-bg-light: rgba(255, 255, 255, 0.05);
+  --color-bg-hover: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(
+      var(--color-gold-transparent) 0.5px,
+      transparent 0.5px
+    ),
+    radial-gradient(var(--color-gold-transparent) 0.5px, transparent 0.5px);
+  background-size: 15px 15px;
+  background-position: 0 0, 7.5px 7.5px;
+  color: var(--color-text);
+  font-family: var(--font-main);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+.main-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.disco-ball {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  /* Keep border-radius for shape */
+  background-image: url("assets/disco-ball.gif");
+  background-size: cover;
+  /* Cover the entire area */
+  background-position: center;
+  /* Center the GIF */
+  box-shadow: 0 0 12px 2px #fff, 0 0 20px 6px var(--color-gold);
+  /* Keep shadow for glow */
+}
+
+.main-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-pane {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+.album-art-placeholder {
+  background-image: url("assets/album-cover.jpg");
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: contain;
+  border: 6px solid white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.left-pane h2,
+.left-pane h3 {
+  font-family: var(--font-display);
+  color: var(--color-text);
+  margin: 0.5rem 0;
+}
+
+.left-pane h2 {
+  font-size: 2rem;
+}
+
+.left-pane h3 {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+button {
+  background-color: var(--color-highlight);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.4px;
+  font-weight: bold;
+  color: var(--color-bg);
+  border: solid 2px var(--color-gold);
+  border-radius: 50px;
+  padding: 0.8rem 0.5rem;
+  cursor: pointer;
+  margin: 0 0.4rem 0 0;
+  width: 160px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.2s ease-in-out;
+}
+
+.button-group {
+  display: flex;
+  padding: 0 0 2rem 0;
+  width: 100%;
+}
+
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  /* Start off-screen to the left */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  transition: all 0.4s ease-in-out;
+  /* Sparkle sweep animation */
+  transform: skewX(-30deg);
+  /* Angle the sparkle */
+  z-index: -1;
+  /* Place below button content */
+}
+
+button:hover::after {
+  left: 100%;
+  /* Sweep across to the right */
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #555;
+  /* Darker background for disabled state */
+}
+
+button:disabled::after {
+  display: none;
+  /* Disable hover effect for disabled buttons */
+}
+
+.right-pane {
+  flex: 2;
+  min-width: 300px;
+  height: 102vh;
+  background-color: rgba(10, 0, 20, 0.65);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--color-highlight);
+}
+
+.right-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.track-list-wrapper {
+  text-align: left;
+}
+
+.track-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.track-list li {
+  display: grid;
+  grid-template-columns: 13px 22px 1fr auto;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.track-list li:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.track-number {
+  color: #aaa;
+  font-family: var(--font-display);
+}
+
+.track-info {
+  font-weight: bold;
+}
+
+.track-menu {
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+}
+
+.vinyl-icon-sm {
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#review {
+  background-color: var(--color-bg-light);
+  padding: 0.5rem 1rem;
+  font-size: 0.84rem;
+  line-height: 1.46;
+  margin-bottom: 0.4rem;
+  height: 21rem;
+  overflow-y: scroll;
+}
+
+#reviewSummary {
+  background-color: var(--color-gold-transparent);
+  padding: 0.5rem 1rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+#reviewSummary ul {
+  list-style: none;
+  /* Remove default bullet */
+  padding-left: 1.2em;
+  /* Adjust for custom bullet */
+}
+
+#reviewSummary ul li::before {
+  content: "✦";
+  /* Custom bullet symbol */
+  color: var(--color-highlight);
+  /* Color of the bullet */
+  display: inline-block;
+  width: 1em;
+  /* Space for the bullet */
+  margin-left: -1.2em;
+  /* Pull the bullet to the left */
+}
+
+progress[hidden] ~ label {
+  display: none;
+}
+progress {
+  vertical-align: baseline;
+}
